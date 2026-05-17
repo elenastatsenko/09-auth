@@ -5,14 +5,9 @@ export interface NotesResponse {
   notes: Note[];
   totalPages: number;
 }
-
-const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
-export const notehubAPI = axios.create({
-  baseURL: "https://notehub-public.goit.study/api",
-  headers: {
-    Authorization: `Bearer ${myKey}`,
-  },
+const api = axios.create({
+  baseURL: "/api",
+  withCredentials: true,
 });
 
 export const fetchNotes = async (
@@ -20,7 +15,7 @@ export const fetchNotes = async (
   search: string = "",
   filter?: string | undefined
 ): Promise<NotesResponse> => {
-  const { data } = await notehubAPI.get<NotesResponse>("/notes", {
+  const { data } = await api.get<NotesResponse>("/notes", {
     params: {
       page,
       perPage: 12,
@@ -33,16 +28,16 @@ export const fetchNotes = async (
 };
 
 export const createNote = async (note: ValuesFormProps): Promise<Note> => {
-  const response = await notehubAPI.post<Note>("/notes", note);
+  const response = await api.post<Note>("/notes", note);
   return response.data;
 };
 
 export const deleteNote = async (noteId: string): Promise<Note> => {
-  const response = await notehubAPI.delete<Note>(`/notes/${noteId}`);
+  const response = await api.delete<Note>(`/notes/${noteId}`);
   return response.data;
 };
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await notehubAPI.get<Note>(`/notes/${id}`);
+  const response = await api.get<Note>(`/notes/${id}`);
   return response.data;
 };
