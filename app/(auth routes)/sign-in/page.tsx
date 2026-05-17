@@ -1,21 +1,22 @@
-"use client";
-import { useState } from "react";
-import css from "./SignUpPage.module.css";
-import { register, RegisterRequest } from "@/lib/api/clientApi";
-import { useRouter } from "next/navigation";
+'use client';
+import css from "./SignInPage.module.css"
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {login, LoginRequest } from "@/lib/api/clientApi";
 import { ApiError } from '@/app/api/api'
 
-const SignUp = () => {
-   const router = useRouter();
+const SignIn = () => {
+ const router = useRouter();
   const [error, setError] = useState('');
 
   const handleSubmit = async (formData: FormData) => {
     try {
 	    // Типізуємо дані форми
-      const formValues = Object.fromEntries(formData) as RegisterRequest;
+      const formValues = Object.fromEntries(formData) as LoginRequest;
       // Виконуємо запит
-      const res = await register(formValues);
-      // Виконуємо редірект або відображаємо помилку
+      const res = await login(formValues);
+      
       if (res) {
         router.push('/profile');
       } else {
@@ -29,10 +30,12 @@ const SignUp = () => {
       )
     }
   };
+
   return (
     <main className={css.mainContent}>
-      <h1 className={css.formTitle}>Sign up</h1>
       <form className={css.form} action={handleSubmit}>
+        <h1 className={css.formTitle}>Sign in</h1>
+
         <div className={css.formGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -57,7 +60,7 @@ const SignUp = () => {
 
         <div className={css.actions}>
           <button type="submit" className={css.submitButton}>
-            Register
+            Log in
           </button>
         </div>
 
@@ -67,4 +70,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
