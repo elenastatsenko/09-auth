@@ -88,3 +88,4 @@ export const updateMe = async (data: Partial<User>): Promise<User> => {
   const res = await nextServer.patch<User>('/users/me', data);
   return res.data;
 };
+
